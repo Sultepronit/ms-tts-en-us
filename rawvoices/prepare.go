@@ -1,4 +1,4 @@
-package voices
+package rawvoices
 
 import (
 	"encoding/json"
@@ -31,7 +31,7 @@ func prepPath(end string) string {
 	return filepath.Join(dir, end)
 }
 
-type Voice struct {
+type RawVoice struct {
 	CodeName string `json:"ShortName"`
 	Name     string `json:"DisplayName"`
 	Gender   string `json:"Gender"`
@@ -39,18 +39,18 @@ type Voice struct {
 	Rate     int    `json:"WordsPerMinute,string"`
 }
 
-func FilterVoices() []Voice {
+func Parse() []RawVoice {
 	path := prepPath("voices.json")
 	fmt.Println(path)
 	file, err := os.ReadFile(path)
 	handleErr(err)
 
-	var all []Voice
+	var all []RawVoice
 	err = json.Unmarshal(file, &all)
 	handleErr(err)
 	// fmt.Println(all)
 
-	re := make([]Voice, 0, 100)
+	re := make([]RawVoice, 0, 100)
 	for _, v := range all {
 		if v.Locale != "en-US" || v.Gender == "Neutral" {
 			continue

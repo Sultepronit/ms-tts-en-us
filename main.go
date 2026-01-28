@@ -1,9 +1,9 @@
 package main
 
 import (
+	"fmt"
 	"log"
 	"tts/db"
-	"tts/voices"
 
 	"github.com/joho/godotenv"
 )
@@ -17,11 +17,11 @@ func main() {
 	}
 
 	// db.Edit()
-
-	// voices.FilterVoices()
-	err = db.FillVoices(voices.FilterVoices())
+	// db.FillParsedVoices()
+	v, err := db.SelectVoices(true)
 	if err != nil {
 		log.Fatal(err)
 	}
+	fmt.Println(v)
 
 }
