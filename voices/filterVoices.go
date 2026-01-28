@@ -36,14 +36,10 @@ type Voice struct {
 	Name     string `json:"DisplayName"`
 	Gender   string `json:"Gender"`
 	Locale   string `json:"Locale"`
-	Rate     string `json:"WordsPerMinute"`
+	Rate     int    `json:"WordsPerMinute,string"`
 }
 
-func FilterVoices() {
-	// dir, err := os.ReadDir(".")
-	// handleErr(err)
-	// fmt.Println(dir)
-
+func FilterVoices() []Voice {
 	path := prepPath("voices.json")
 	fmt.Println(path)
 	file, err := os.ReadFile(path)
@@ -54,14 +50,14 @@ func FilterVoices() {
 	handleErr(err)
 	// fmt.Println(all)
 
-	// var enUS []Voice
-	enUS := make([]Voice, 0, 100)
+	re := make([]Voice, 0, 100)
 	for _, v := range all {
 		if v.Locale != "en-US" || v.Gender == "Neutral" {
 			continue
 		}
-		enUS = append(enUS, v)
-		fmt.Println(v)
+		re = append(re, v)
+		// fmt.Println(v)
 	}
 	// fmt.Println(enUS)
+	return re
 }

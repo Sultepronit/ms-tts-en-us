@@ -1,7 +1,9 @@
 package main
 
 import (
+	"log"
 	"tts/db"
+	"tts/voices"
 
 	"github.com/joho/godotenv"
 )
@@ -9,6 +11,17 @@ import (
 func main() {
 	godotenv.Load()
 
+	err := db.Open()
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	// db.Edit()
+
 	// voices.FilterVoices()
-	db.Open()
+	err = db.FillVoices(voices.FilterVoices())
+	if err != nil {
+		log.Fatal(err)
+	}
+
 }

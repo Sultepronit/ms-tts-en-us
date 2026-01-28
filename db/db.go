@@ -2,19 +2,25 @@ package db
 
 import (
 	"database/sql"
+	"log"
 	"time"
 
 	_ "github.com/mattn/go-sqlite3"
 )
 
-func Open() (*sql.DB, error) {
-	db, err := sql.Open("sqlite3", "db/db.sqlite")
+var conn *sql.DB
+
+func Open() error {
+	var err error
+	conn, err = sql.Open("sqlite3", "db/db.sqlite")
 	if err != nil {
-		return nil, err
+		return err
 	}
 
-	db.SetMaxOpenConns(1)
-	db.SetConnMaxLifetime(time.Hour)
+	conn.SetMaxOpenConns(1)
+	conn.SetConnMaxLifetime(time.Hour)
 
-	return db, nil
+	log.Println("DB opened")
+
+	return nil
 }
