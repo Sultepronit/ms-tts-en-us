@@ -3,26 +3,26 @@ package db
 import (
 	"fmt"
 	"log"
+	"tts/models"
 	"tts/rawvoices"
-	"tts/voices"
 )
 
-func SelectVoices(is_male bool) ([]voices.Voice, error) {
+func SelectVoices(isMale bool) ([]models.Voice, error) {
 	query := `
 		SELECT name, code_name, rate, rating, comment
 		FROM voices
 		WHERE excluded = false
 			AND is_male = ?
 	`
-	rows, err := conn.Query(query, is_male)
+	rows, err := conn.Query(query, isMale)
 	if err != nil {
 		return nil, err
 	}
 	defer rows.Close()
 
-	re := make([]voices.Voice, 0, 40)
+	re := make([]models.Voice, 0, 40)
 	for rows.Next() {
-		var v voices.Voice
+		var v models.Voice
 		err = rows.Scan(&v.Name, &v.CodeName, &v.Rate, &v.Rating, &v.Comment)
 		if err != nil {
 			return nil, err
