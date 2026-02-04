@@ -4,8 +4,6 @@ import (
 	"fmt"
 	"log"
 	"tts/db"
-	"tts/files"
-	"tts/service"
 	"tts/voices"
 
 	"github.com/joho/godotenv"
@@ -31,10 +29,19 @@ func main() {
 		log.Fatal(err)
 	}
 	fmt.Println(v)
-	exp := "lest we forget"
-	data, err := service.Generate(exp, v.CodeName)
-	if err != nil {
-		log.Fatal(err)
-	}
-	files.WriteRecord(exp, data)
+	// exp := "lest we forget"
+	// data, err := service.Generate(exp, v.CodeName)
+	// if err != nil {
+	// 	log.Fatal(err)
+	// }
+	// files.WriteRecord(exp, data)
+
+	// err = db.InsertExpression("test")
+	// if err != nil {
+	// 	log.Fatal(err)
+	// }
+	// err = db.AddRecord("test", "1", v.CodeName)
+	// if err != nil {
+	// 	log.Fatal(err)
+	// }
 }
