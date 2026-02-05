@@ -1,0 +1,8 @@
+services:
+  go-app-test:
+    build: .
+    container_name: go-app-test
+    volumes:
+      - ./build:/app
+    ports:
+      - "8088:8080"
