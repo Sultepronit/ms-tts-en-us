@@ -1,11 +1,9 @@
 package main
 
 import (
-	"fmt"
 	"log"
 	"tts/db"
 	"tts/server"
-	"tts/voices"
 
 	"github.com/joho/godotenv"
 )
@@ -25,11 +23,11 @@ func main() {
 	// 	log.Fatal(err)
 	// }
 	// fmt.Println(v)
-	v, err := voices.GetRandomVoice(false)
-	if err != nil {
-		log.Fatal(err)
-	}
-	fmt.Println(v)
+	// v, err := voices.GetRandomVoice(false)
+	// if err != nil {
+	// 	log.Fatal(err)
+	// }
+	// fmt.Println(v)
 	// exp := "lest we forget"
 	// data, err := service.Generate(exp, v.CodeName)
 	// if err != nil {
