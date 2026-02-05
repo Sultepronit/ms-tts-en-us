@@ -12,6 +12,7 @@ func generate(expression string, record string) ([]byte, error) {
 	if err != nil {
 		return nil, err
 	}
+	log.Println(v)
 
 	data, err := service.Generate(expression, v.CodeName)
 	if err != nil {
