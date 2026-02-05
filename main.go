@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"log"
 	"tts/db"
+	"tts/server"
 	"tts/voices"
 
 	"github.com/joho/godotenv"
@@ -44,4 +45,5 @@ func main() {
 	// if err != nil {
 	// 	log.Fatal(err)
 	// }
+	server.Start()
 }
