@@ -1,6 +1,7 @@
 package files
 
 import (
+	"bytes"
 	"fmt"
 	"log"
 	"os"
@@ -8,6 +9,8 @@ import (
 	"strconv"
 	"tts/service"
 	"tts/voices"
+
+	"github.com/bogem/id3v2/v2"
 )
 
 var rgxMp3 = regexp.MustCompile(`^([1-6])\.mp3$`)
@@ -25,6 +28,21 @@ func getNum(record string) int {
 	return -1
 }
 
+func setTag(data []byte, voice string, exp string) ([]byte, error) {
+	tag := id3v2.NewEmptyTag()
+	tag.SetArtist(voice)
+	tag.SetTitle(exp)
+
+	buff := new(bytes.Buffer)
+	if _, err := tag.WriteTo(buff); err != nil {
+		return nil, err
+	}
+
+	buff.Write(data)
+
+	return buff.Bytes(), nil
+}
+
 func generate(expression string, record string) ([]byte, error) {
 	d := getNum(record)
 	if d < 0 {
@@ -39,6 +57,11 @@ func generate(expression string, record string) ([]byte, error) {
 	log.Println(v)
 
 	data, err := service.Generate(expression, v.CodeName)
+	if err != nil {
+		return nil, err
+	}
+
+	data, err = setTag(data, v.Name, expression)
 	if err != nil {
 		return nil, err
 	}
