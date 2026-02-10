@@ -12,15 +12,6 @@ import (
 
 func Generate(text string, voice string) ([]byte, error) {
 	ssml := fmt.Sprintf(`
-<speak version="1.0" xml:lang="en-US">
-	<voice name="%s">
-		<prosody volume="+100%%">
-			%s
-		</prosody>
-  </voice>
-</speak>`, voice, text)
-
-	ssml = fmt.Sprintf(`
 	<speak version="1.0" xml:lang="en-US">
 		<voice name="%s">
 			%s
