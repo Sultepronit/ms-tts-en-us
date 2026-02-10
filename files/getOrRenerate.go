@@ -7,6 +7,7 @@ import (
 	"os"
 	"regexp"
 	"strconv"
+	"tts/db"
 	"tts/service"
 	"tts/voices"
 
@@ -50,11 +51,21 @@ func generate(expression string, record string) ([]byte, error) {
 	}
 
 	isMale := d%2 == 1
-	v, err := voices.GetRandomVoice(isMale)
+	usedVoices, err := db.SelectRecord(expression)
+	if err != nil {
+		return nil, err
+	}
+
+	v, err := voices.GetRandomVoice(isMale, usedVoices)
 	if err != nil {
 		return nil, err
 	}
 	log.Println(v)
+
+	err = db.UpdateRecord(expression, d, v.CodeName)
+	if err != nil {
+		return nil, err
+	}
 
 	data, err := service.Generate(expression, v.CodeName)
 	if err != nil {

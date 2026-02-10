@@ -3,12 +3,12 @@ module tts
 go 1.24.0
 
 require (
+	github.com/bogem/id3v2/v2 v2.1.4
 	github.com/joho/godotenv v1.5.1
 	modernc.org/sqlite v1.44.3
 )
 
 require (
-	github.com/bogem/id3v2/v2 v2.1.4 // indirect
 	github.com/dustin/go-humanize v1.0.1 // indirect
 	github.com/google/uuid v1.6.0 // indirect
 	github.com/mattn/go-isatty v0.0.20 // indirect

@@ -9,6 +9,8 @@ import (
 )
 
 func main() {
+	log.Println("v 0.5.0")
+
 	godotenv.Load()
 
 	err := db.Open()
@@ -18,12 +20,7 @@ func main() {
 
 	// db.Edit()
 	// db.FillParsedVoices()
-	// v, err := db.SelectVoices(true)
-	// if err != nil {
-	// 	log.Fatal(err)
-	// }
-	// fmt.Println(v)
-	// v, err := voices.GetRandomVoice(false)
+	// v, err := voices.GetRandomVoice(false, []string{"en-US-Ava:DragonHDLatestNeural"})
 	// if err != nil {
 	// 	log.Fatal(err)
 	// }
@@ -39,7 +36,12 @@ func main() {
 	// if err != nil {
 	// 	log.Fatal(err)
 	// }
-	// err = db.AddRecord("test", "1", v.CodeName)
+	// err = db.AddRecord("test", 1, v.CodeName)
+	// if err != nil {
+	// 	log.Fatal(err)
+	// }
+	// re, err := db.SelectRecord("tests")
+	// log.Println(re)
 	// if err != nil {
 	// 	log.Fatal(err)
 	// }

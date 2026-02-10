@@ -4,6 +4,8 @@ import (
 	"math/rand/v2"
 	"tts/db"
 	"tts/models"
+	"fmt"
+	"slices"
 )
 
 var males []models.Voice
@@ -22,11 +24,23 @@ func getVoices(isMale bool) ([]models.Voice, error) {
 	return db.SelectVoices(isMale)
 }
 
-func GetRandomVoice(isMale bool) (models.Voice, error) {
+func GetRandomVoice(isMale bool, exclude []string) (models.Voice, error) {
 	set, err := getVoices(isMale)
 	if err != nil {
 		return models.Voice{}, err
 	}
-	i := rand.IntN(len(set))
-	return set[i], err
+	fmt.Println(exclude)
+
+	var voice models.Voice
+	for range 20 {
+		i := rand.IntN(len(set))
+		// i := rand.IntN(2)
+		fmt.Println(i)
+		voice = set[i]
+		if !slices.Contains(exclude, voice.CodeName) {
+			break
+		}
+	}
+	
+	return voice, err
 }
