@@ -6,6 +6,7 @@ import (
 	"os"
 	"path/filepath"
 	"runtime"
+	"strings"
 )
 
 func handleErr(err error) {
@@ -52,7 +53,7 @@ func Parse() []RawVoice {
 
 	re := make([]RawVoice, 0, 100)
 	for _, v := range all {
-		if v.Locale != "en-US" || v.Gender == "Neutral" {
+		if v.Locale != "en-US" || v.Gender == "Neutral" || strings.Contains(v.Name, "Multilingual") {
 			continue
 		}
 		re = append(re, v)

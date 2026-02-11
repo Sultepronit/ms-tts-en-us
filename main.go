@@ -9,7 +9,7 @@ import (
 )
 
 func main() {
-	log.Println("v 0.5.0")
+	log.Println("v 0.5.1")
 
 	godotenv.Load()
 
