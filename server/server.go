@@ -12,8 +12,7 @@ func Start() {
 
 	mux.HandleFunc("GET /{expression}/{record}", func(w http.ResponseWriter, r *http.Request) {
 		log.Println(r.URL.Path)
-		// log.Println(r.PathValue("expression"))
-		// log.Println(r.PathValue("record"))
+
 		exp := r.PathValue("expression")
 		rec := r.PathValue("record")
 		data, err := files.GetOrGenerate(exp, rec)
@@ -26,6 +25,7 @@ func Start() {
 		w.Header().Set("Content-Type", "audio/mpeg")
 		w.Header().Set("Content-Length", fmt.Sprintf("%d", len(data)))
 		w.Header().Set("Accept-Ranges", "bytes")
+		w.Header().Set("X-Voice", "Test Voice")
 		w.WriteHeader(http.StatusOK)
 		w.Write(data)
 	})
