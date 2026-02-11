@@ -5,6 +5,8 @@ import (
 	"log"
 	"net/http"
 	"tts/files"
+
+	"github.com/rs/cors"
 )
 
 func Start() {
@@ -26,6 +28,7 @@ func Start() {
 		w.Header().Set("Content-Length", fmt.Sprintf("%d", len(data)))
 		w.Header().Set("Accept-Ranges", "bytes")
 		w.Header().Set("X-Voice", "Test Voice")
+		w.Header().Set("Access-Control-Expose-Headers", "X-Voice")
 		w.WriteHeader(http.StatusOK)
 		w.Write(data)
 	})
@@ -37,5 +40,8 @@ func Start() {
 
 	port := "8080"
 	log.Printf("Listening on port %s\n", port)
-	log.Fatal(http.ListenAndServe(":"+port, mux))
+
+	handler := cors.Default().Handler(mux)
+	// log.Fatal(http.ListenAndServe(":"+port, mux))
+	log.Fatal(http.ListenAndServe(":"+port, handler))
 }
