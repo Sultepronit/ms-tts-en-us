@@ -1,0 +1,7 @@
+runtime: go124
+instance_class: F1
+service: ms-tts
+
+handlers:
+  - url: /.*
+    script: auto
