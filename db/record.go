@@ -40,3 +40,15 @@ func SelectRecord(expression string) ([]string, error) {
 
 	return re, nil
 }
+
+func SelectRecordsVoice(expression string, num int) (string, error) {
+	query := fmt.Sprintf(`SELECT v%d FROM records WHERE expression = ?`, num)
+	var v string
+
+	err := conn.QueryRow(query, expression).Scan(&v)
+	if err != nil {
+		return "", err
+	}
+
+	return v, nil
+}

@@ -33,6 +33,15 @@ func SelectVoices(isMale bool) ([]models.Voice, error) {
 	return re, nil
 }
 
+func DownrateVoice(v string) error {
+	query := `UPDATE voices SET rating = rating - 1 WHERE code_name = ?`
+	_, err := conn.Exec(query, v)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
 func fillVoices(list []rawvoices.RawVoice) error {
 	tx, err := conn.Begin()
 	if err != nil {

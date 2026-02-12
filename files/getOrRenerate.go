@@ -5,29 +5,12 @@ import (
 	"fmt"
 	"log"
 	"os"
-	"regexp"
-	"strconv"
 	"tts/db"
 	"tts/service"
 	"tts/voices"
 
 	"github.com/bogem/id3v2/v2"
 )
-
-var rgxMp3 = regexp.MustCompile(`^([1-6])\.mp3$`)
-
-func getNum(record string) int {
-	matches := rgxMp3.FindStringSubmatch(record)
-	if len(matches) > 1 {
-		d, err := strconv.Atoi(matches[1])
-		if err != nil {
-			return -1
-		}
-		return d
-	}
-
-	return -1
-}
 
 func setTag(data []byte, voice string, exp string) ([]byte, error) {
 	tag := id3v2.NewEmptyTag()
@@ -77,7 +60,13 @@ func generate(expression string, record string) ([]byte, error) {
 		return nil, err
 	}
 
-	go writeRecord(expression, record, data)
+	// go writeRecord(expression, record, data)
+	go func() {
+		err := writeRecord(expression, record, data)
+		if err != nil {
+			log.Println("Error writing record:", err)
+		}
+	}()
 
 	return data, err
 }

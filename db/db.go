@@ -21,7 +21,9 @@ func Open() error {
 	conn.SetMaxOpenConns(1)
 	conn.SetConnMaxLifetime(time.Hour)
 
-	log.Println("DB opened")
+	var v string
+	conn.QueryRow("SELECT sqlite_version()").Scan(&v)
+	log.Println("DB opened! SQLite:", v)
 
 	return nil
 }
