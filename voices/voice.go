@@ -29,7 +29,7 @@ func GetRandomVoice(isMale bool, exclude []string) (models.Voice, error) {
 	if err != nil {
 		return models.Voice{}, err
 	}
-	fmt.Println(exclude)
+	// fmt.Println(exclude)
 
 	var voice models.Voice
 	for range 20 {
