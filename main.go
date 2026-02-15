@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"log"
 	"tts/db"
 	"tts/server"
@@ -45,5 +46,7 @@ func main() {
 	// if err != nil {
 	// 	log.Fatal(err)
 	// }
+	r, err := db.SelectRecordsVoice("test-2", 1)
+	fmt.Println(r, err)
 	server.Start()
 }

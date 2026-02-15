@@ -71,7 +71,7 @@ func generate(expression string, record string) ([]byte, error) {
 	return data, err
 }
 
-func GetOrGenerate(expression string, record string) ([]byte, error) {
+func GetOrGenerate(expression string, record string, isTemp bool) ([]byte, error) {
 	data, err := readRecord(expression, record)
 	if err != nil {
 		if os.IsNotExist(err) {

@@ -4,15 +4,32 @@ import (
 	"fmt"
 	"log"
 	"net/http"
+	"tts/db"
 	"tts/files"
 )
+
+func checkTemp(mode string, exp string) bool {
+	if mode != "temp" {
+		return false
+	}
+
+	_, err := db.SelectRecordsVoice(exp, 1)
+	if err != nil { // in 99% cases no record in the db
+		return true
+	}
+
+	return false
+}
 
 func getRecord(w http.ResponseWriter, r *http.Request) {
 	log.Println(r.URL.Path)
 
 	exp := r.PathValue("expression")
 	rec := r.PathValue("record")
-	data, err := files.GetOrGenerate(exp, rec)
+	isTemp := checkTemp(r.URL.Query().Get("mode"), exp)
+	fmt.Println(isTemp)
+
+	data, err := files.GetOrGenerate(exp, rec, isTemp)
 	if err != nil {
 		log.Println(err)
 		http.Error(w, "Internal Server Error", http.StatusInternalServerError)
@@ -33,7 +50,7 @@ func delRecord(w http.ResponseWriter, r *http.Request) {
 
 	exp := r.PathValue("expression")
 	rec := r.PathValue("record")
-	
+
 	err := files.Delete(exp, rec)
 	if err != nil {
 		log.Println(err)
