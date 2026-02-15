@@ -22,7 +22,8 @@ func Start() {
 	port := "8080"
 	log.Printf("Listening on port %s\n", port)
 
-	handler := cors.Default().Handler(mux)
+	// handler := cors.Default().Handler(mux)
+	handler := cors.AllowAll().Handler(mux)
 	// log.Fatal(http.ListenAndServe(":"+port, mux))
 	log.Fatal(http.ListenAndServe(":"+port, handler))
 }
