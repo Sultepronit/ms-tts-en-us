@@ -1,7 +1,6 @@
 package main
 
 import (
-	"fmt"
 	"log"
 	"tts/db"
 	"tts/server"
@@ -10,7 +9,7 @@ import (
 )
 
 func main() {
-	log.Println("v 0.5.4.2")
+	log.Println("v 0.5.5")
 
 	godotenv.Load()
 
@@ -46,7 +45,7 @@ func main() {
 	// if err != nil {
 	// 	log.Fatal(err)
 	// }
-	r, err := db.SelectRecordsVoice("test-2", 1)
-	fmt.Println(r, err)
+	// r, err := db.SelectRecordsVoice("test-2", 1)
+	// fmt.Println(r, err)
 	server.Start()
 }

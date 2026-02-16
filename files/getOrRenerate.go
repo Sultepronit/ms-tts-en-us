@@ -27,14 +27,39 @@ func setTag(data []byte, voice string, exp string) ([]byte, error) {
 	return buff.Bytes(), nil
 }
 
-func generate(expression string, record string) ([]byte, error) {
+var tempRecords = make(map[string][]string)
+
+func getUsedVoices(exp string, isTemp bool) ([]string, error) {
+	if !isTemp {
+		return db.SelectOrCreateRecord(exp)
+	}
+
+	if val, ok := tempRecords[exp]; ok {
+		return val, nil
+	}
+
+	tempRecords[exp] = make([]string, 6)
+	return tempRecords[exp], nil
+}
+
+func updateRecord(exp string, num int, vName string, isTemp bool) error {
+	if !isTemp {
+		return db.UpdateRecord(exp, num, vName)
+	}
+
+	tempRecords[exp][num-1] = vName
+	return nil
+}
+
+func generate(expression string, record string, isTemp bool) ([]byte, error) {
 	d := getNum(record)
 	if d < 0 {
 		return nil, fmt.Errorf("invalid record: %s", record)
 	}
 
 	isMale := d%2 == 1
-	usedVoices, err := db.SelectRecord(expression)
+	// usedVoices, err := db.SelectOrCreateRecord(expression)
+	usedVoices, err := getUsedVoices(expression, isTemp)
 	if err != nil {
 		return nil, err
 	}
@@ -45,7 +70,8 @@ func generate(expression string, record string) ([]byte, error) {
 	}
 	log.Println(v)
 
-	err = db.UpdateRecord(expression, d, v.CodeName)
+	// err = db.UpdateRecord(expression, d, v.CodeName)
+	err = updateRecord(expression, d, v.CodeName, isTemp)
 	if err != nil {
 		return nil, err
 	}
@@ -60,9 +86,8 @@ func generate(expression string, record string) ([]byte, error) {
 		return nil, err
 	}
 
-	// go writeRecord(expression, record, data)
 	go func() {
-		err := writeRecord(expression, record, data)
+		err := writeRecord(expression, record, data, isTemp)
 		if err != nil {
 			log.Println("Error writing record:", err)
 		}
@@ -72,11 +97,11 @@ func generate(expression string, record string) ([]byte, error) {
 }
 
 func GetOrGenerate(expression string, record string, isTemp bool) ([]byte, error) {
-	data, err := readRecord(expression, record)
+	data, err := readRecord(expression, record, isTemp)
 	if err != nil {
 		if os.IsNotExist(err) {
 			log.Printf("Generating: %s - %s", expression, record)
-			return generate(expression, record)
+			return generate(expression, record, isTemp)
 		}
 
 		return nil, err

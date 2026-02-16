@@ -1,11 +1,11 @@
 package voices
 
 import (
+	"fmt"
 	"math/rand/v2"
+	"slices"
 	"tts/db"
 	"tts/models"
-	"fmt"
-	"slices"
 )
 
 var males []models.Voice
@@ -29,7 +29,7 @@ func GetRandomVoice(isMale bool, exclude []string) (models.Voice, error) {
 	if err != nil {
 		return models.Voice{}, err
 	}
-	// fmt.Println(exclude)
+	fmt.Println(exclude)
 
 	var voice models.Voice
 	for range 20 {
@@ -41,6 +41,6 @@ func GetRandomVoice(isMale bool, exclude []string) (models.Voice, error) {
 			break
 		}
 	}
-	
+
 	return voice, err
 }

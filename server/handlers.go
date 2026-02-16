@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"log"
 	"net/http"
+
 	"tts/db"
 	"tts/files"
 )
@@ -22,12 +23,13 @@ func checkTemp(mode string, exp string) bool {
 }
 
 func getRecord(w http.ResponseWriter, r *http.Request) {
-	log.Println(r.URL.Path)
+	q := r.URL.Query()
+	log.Println(r.URL.Path, q.Encode())
+	// log.Println()
 
 	exp := r.PathValue("expression")
 	rec := r.PathValue("record")
 	isTemp := checkTemp(r.URL.Query().Get("mode"), exp)
-	fmt.Println(isTemp)
 
 	data, err := files.GetOrGenerate(exp, rec, isTemp)
 	if err != nil {
