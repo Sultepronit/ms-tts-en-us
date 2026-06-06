@@ -4,8 +4,6 @@ dump:
 restore:
 	rm -f old.db.sqlite
 
-	if [ -f db.sqlite ]; then
-		mv sb.sqlite old.db.sqlite
-	fi
+	$(if $(wildcard db.sqlite), mv db.sqlite old.db.sqlite)
 
 	sqlite3 db.sqlite < dump.sql
