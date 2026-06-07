@@ -57,7 +57,7 @@ func Parse() []RawVoice {
 			continue
 		}
 		re = append(re, v)
-		// fmt.Println(v)
+		fmt.Println(v)
 	}
 	// fmt.Println(enUS)
 	return re

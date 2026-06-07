@@ -3,17 +3,21 @@ package db
 import (
 	"fmt"
 	"log"
+	"os"
 	"tts/models"
 	"tts/rawvoices"
 )
 
 func SelectVoices(isMale bool) ([]models.Voice, error) {
-	query := `
+	query := fmt.Sprintf(`
 		SELECT name, code_name, rate, rating, comment
 		FROM voices
 		WHERE excluded = false
+			AND %s = true
 			AND is_male = ?
-	`
+	`, os.Getenv("SPEECH_REGION"))
+	// fmt.Println(query)
+	fmt.Println(os.Getenv("SPEECH_REGION"))
 	rows, err := conn.Query(query, isMale)
 	if err != nil {
 		return nil, err
@@ -50,8 +54,9 @@ func fillVoices(list []rawvoices.RawVoice) error {
 	defer tx.Rollback()
 
 	stmt, err := tx.Prepare(`
-		INSERT INTO voices (name, code_name, is_male, rate)
-		VALUES (?, ?, ?, ?)
+		INSERT INTO voices (name, code_name, is_male, rate, germanywestcentral)
+		VALUES (?, ?, ?, ?, ?)
+		ON CONFLICT DO UPDATE SET germanywestcentral = 1;
 	`)
 	if err != nil {
 		return err
@@ -63,8 +68,8 @@ func fillVoices(list []rawvoices.RawVoice) error {
 		if v.Rate != 0 {
 			rate = v.Rate
 		}
-		fmt.Println(rate)
-		_, err = stmt.Exec(v.Name, v.CodeName, v.Gender == "Male", rate)
+		// fmt.Println(rate)
+		_, err = stmt.Exec(v.Name, v.CodeName, v.Gender == "Male", rate, true)
 		if err != nil {
 			return err
 		}
